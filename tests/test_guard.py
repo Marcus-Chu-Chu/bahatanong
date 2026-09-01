@@ -27,6 +27,8 @@ def test_existing_limit_is_kept():
     "SELECT * FROM read_csv_auto('x.csv')",     # table function
     "COPY exposure TO 'out.csv'",
     "WITH x AS (DELETE FROM v_exposure RETURNING *) SELECT * FROM x",  # DML-bodied CTE
+    "SELECT range(100000000)",                  # generator function (resource exhaustion)
+    "SELECT * FROM UNNEST(generate_series(1, 100000000)) AS t(x)",  # UNNEST generator
     "not sql at all",
 ])
 def test_rejected_statements(bad):
@@ -38,6 +40,12 @@ def test_union_cte_is_fine():
     # The DML rejection must not over-block legitimate set-operation CTEs.
     q = safe_sql("WITH x AS (SELECT 'a' AS c UNION ALL SELECT 'b') SELECT c FROM x")
     assert "UNION" in q.upper()
+
+
+def test_top_level_set_operations_allowed():
+    # Set operations over allowed views are read-only and explicitly permitted.
+    q = safe_sql("SELECT barangay FROM v_exposure UNION SELECT city FROM v_city_league")
+    assert "UNION" in q.upper() and q.rstrip().upper().endswith("LIMIT 200")
 
 
 def test_cte_over_allowed_views_is_fine():

@@ -70,3 +70,8 @@ def test_exposure_score_is_source_scale():
     ).fetchone()
     assert 0.0 <= lo and hi <= 100.0
     assert hi > 1.0  # 0-100 (BahaMap source scale), NOT 0-1
+
+
+def test_memory_limit_bounded():
+    val = get_connection().execute("SELECT current_setting('memory_limit')").fetchone()[0]
+    assert "512" in str(val)

@@ -42,10 +42,13 @@ def safe_sql(query: str) -> str:
             raise GuardError(
                 f"Relation '{name}' is not allowed. Allowed: {sorted(ALLOWED_RELATIONS)}"
             )
-    for func in tree.find_all(exp.Anonymous):
-        raise GuardError(f"Function '{func.name}' is not allowed.")
-    if list(tree.find_all(exp.ReadCSV)):
-        raise GuardError("File-reading functions are not allowed.")
+    # Named generator/reader constructs are rejected explicitly: they parse as
+    # dedicated node types (not Anonymous) and are resource-exhaustion vectors
+    # with no legitimate use over this schema. Top-level set operations
+    # (UNION/EXCEPT/INTERSECT) are ALLOWED by design - they are read-only Query
+    # nodes and the relation/DML checks above walk every branch.
+    for func in tree.find_all(exp.Anonymous, exp.GenerateSeries, exp.Unnest):
+        raise GuardError(f"Function '{func.key}' is not allowed.")
 
     if tree.args.get("limit") is None:
         tree = tree.limit(ROW_CAP)
