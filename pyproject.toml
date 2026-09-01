@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bahatanong-mcp"
+version = "0.1.0"
+description = "MCP server for BahaTanong - grounded bilingual Q&A tools over the BahaMap Metro Manila flood-exposure atlas"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Marcus Chu", email = "gilmlachu@gmail.com" }]
+dependencies = [
+    "duckdb>=1.1",
+    "sqlglot>=25.0",
+    "chromadb>=0.5.5",
+    "sentence-transformers>=3.1",
+    "rapidfuzz>=3.9",
+    "mcp>=1.2",
+]
+
+[project.scripts]
+bahatanong-mcp = "bahatanong_mcp.server:main"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "pandas>=2.2",
+    "pyarrow>=17.0",
+    "langgraph>=0.2.60",
+    "langchain-anthropic>=0.3",
+    "langchain-core>=0.3",
+    "scipy>=1.14",
+    "streamlit>=1.40",
+    "python-dotenv>=1.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+bahatanong_mcp = ["data/**/*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+markers = ["live: needs ANTHROPIC_API_KEY (deselect with '-m \"not live\"')"]
