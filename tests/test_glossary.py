@@ -18,3 +18,7 @@ def test_no_term_lists_all():
 
 def test_unknown_term_lists_all():
     assert "terms" in lookup("blockchain")
+
+
+def test_whitespace_query_lists_all():
+    assert "terms" in lookup("   ")

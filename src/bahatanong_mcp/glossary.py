@@ -18,7 +18,8 @@ def lookup(term: str | None) -> dict:
     terms = _terms()
     if term:
         want = _normalize(term)
-        for key in terms:
-            if _normalize(key) == want or want in _normalize(key):
-                return {"term": key, "definition": terms[key]}
+        if want:  # a query that normalizes to "" must not substring-match everything
+            for key in terms:
+                if _normalize(key) == want or want in _normalize(key):
+                    return {"term": key, "definition": terms[key]}
     return {"terms": sorted(terms)}

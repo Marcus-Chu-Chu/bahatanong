@@ -1,7 +1,7 @@
 """Fuzzy barangay-name resolution for 'did you mean...?' suggestions."""
 from functools import lru_cache
 
-from rapidfuzz import fuzz, process
+from rapidfuzz import fuzz
 
 from .db import get_connection
 
@@ -20,10 +20,13 @@ def find_barangay(name: str, limit: int = 3) -> list[dict]:
     # but let a bare exact name still hit 100 via the name-only scorer.
     scored = []
     for entry in cat:
-        s = max(
-            fuzz.WRatio(name, entry["barangay"]),
-            fuzz.WRatio(name, entry["label"]),
-        )
+        s_name = fuzz.WRatio(name, entry["barangay"])
+        s_label = fuzz.WRatio(name, entry["label"])
+        # The label ("Name City") may only LIFT a genuine name match (max +15,
+        # so "San Roque Navotas" disambiguates the four San Roques) - never
+        # manufacture a score from the city token alone, else "San" would rank
+        # every San Juan barangay above the real San-named ones.
+        s = max(s_name, min(s_label, s_name + 15))
         scored.append((s, entry))
     scored.sort(key=lambda t: (-t[0], t[1]["barangay"], t[1]["city"]))
     return [
