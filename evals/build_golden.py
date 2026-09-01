@@ -79,15 +79,22 @@ def make_ranking(n=20):
         top = Q("SELECT city FROM v_city_league ORDER BY city_rank LIMIT 3")
         items.append({"id": f"rank-{len(items)+1:03d}", "type": "ranking", "lang": lang,
                       "question": q, "expect": {"ordered_names": [top[0][0]]}})
-    # pad to n with top-3-per-metric variants
-    while len(items) < n:
-        city = random.choice(CITIES[:8])
+    # pad to n with top-3-per-metric variants - shuffle-and-dedupe instead of
+    # random.choice-with-replacement, which let the same city (and therefore the
+    # same question text) get drawn more than once.
+    pad_cities = list(CITIES[:8])
+    random.shuffle(pad_cities)
+    for city in pad_cities:
+        if len(items) >= n:
+            break
+        q = f"Top 3 barangays in {city} by estimated exposed residents?"
+        if any(i["question"] == q for i in items):
+            continue
         names = [r[0] for r in Q(
             f"SELECT barangay FROM v_exposure WHERE city = '{city}' "
             f"ORDER BY est_pop_exposed_25yr DESC LIMIT 3")]
         items.append({"id": f"rank-{len(items)+1:03d}", "type": "ranking", "lang": "en",
-                      "question": f"Top 3 barangays in {city} by estimated exposed residents?",
-                      "expect": {"ordered_names": names}})
+                      "question": q, "expect": {"ordered_names": names}})
     return items[:n]
 
 
@@ -120,13 +127,17 @@ def make_aggregation(n=20):
 
 def make_comparison(n=15):
     items, pairs = [], []
-    while len(pairs) < n:
-        a, b = random.sample(POOL, 2)
-        if a[1] != b[1] or a[0] != b[0]:
-            pairs.append((a, b))
     metrics = [(4, "estimated exposed residents", "tinatayang residenteng apektado"),
                (6, "schools inside the 25-year flood zone", "paaralang nasa 25-year flood zone"),
                (3, "residents", "residente")]
+    while len(pairs) < n:
+        a, b = random.sample(POOL, 2)
+        if a[1] == b[1] and a[0] == b[0]:
+            continue
+        m = metrics[len(pairs) % 3][0]  # the metric THIS pair will be scored on
+        if a[m] == b[m]:
+            continue  # would be an unresolvable tie - resample instead
+        pairs.append((a, b))
     for i, (a, b) in enumerate(pairs):
         m, en_name, tl_name = metrics[i % 3]
         winner = a if a[m] >= b[m] else b
@@ -151,6 +162,14 @@ def main() -> None:
             it["expect"]["pcode"] = rows[0][0]
 
     items = make_lookup() + make_ranking() + make_aggregation() + make_comparison() + manual
+
+    rank_qs = [i["question"] for i in items if i["type"] == "ranking"]
+    assert len(set(rank_qs)) == len(rank_qs), "duplicate ranking questions"
+    for i in items:
+        if i["type"] == "comparison":
+            v = i["expect"]["values"]
+            assert v[0] != v[1], f"tie comparison in {i['id']}"
+
     assert len(items) == 120, f"got {len(items)}"
     OUT.write_text("\n".join(json.dumps(i, ensure_ascii=False) for i in items) + "\n",
                    encoding="utf-8")
