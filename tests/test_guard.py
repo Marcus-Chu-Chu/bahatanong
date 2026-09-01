@@ -26,11 +26,18 @@ def test_existing_limit_is_kept():
     "SELECT * FROM information_schema.tables",  # off-allowlist relation
     "SELECT * FROM read_csv_auto('x.csv')",     # table function
     "COPY exposure TO 'out.csv'",
+    "WITH x AS (DELETE FROM v_exposure RETURNING *) SELECT * FROM x",  # DML-bodied CTE
     "not sql at all",
 ])
 def test_rejected_statements(bad):
     with pytest.raises(GuardError):
         safe_sql(bad)
+
+
+def test_union_cte_is_fine():
+    # The DML rejection must not over-block legitimate set-operation CTEs.
+    q = safe_sql("WITH x AS (SELECT 'a' AS c UNION ALL SELECT 'b') SELECT c FROM x")
+    assert "UNION" in q.upper()
 
 
 def test_cte_over_allowed_views_is_fine():

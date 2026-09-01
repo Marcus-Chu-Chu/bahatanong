@@ -28,6 +28,11 @@ def safe_sql(query: str) -> str:
     ):
         raise GuardError("Only SELECT statements are allowed.")
 
+    # Reject write/DDL nodes ANYWHERE in the tree (covers DML-bodied CTEs and
+    # subqueries, e.g. WITH x AS (DELETE ... RETURNING *) SELECT * FROM x).
+    for bad in tree.find_all(exp.Insert, exp.Update, exp.Delete, exp.Create, exp.Drop, exp.Alter):
+        raise GuardError(f"Write/DDL operations are not allowed: {bad.key}")
+
     cte_names = {cte.alias_or_name.lower() for cte in tree.find_all(exp.CTE)}
     for table in tree.find_all(exp.Table):
         name = table.name.lower()
