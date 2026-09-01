@@ -49,3 +49,20 @@ def test_connection_is_read_only():
     con = get_connection()
     with pytest.raises(Exception):
         con.execute("CREATE TABLE nope (x INT)")
+
+
+def test_city_names_normalized():
+    con = get_connection()
+    assert con.execute("SELECT COUNT(DISTINCT city) FROM v_exposure").fetchone()[0] == 17
+    assert con.execute(
+        "SELECT COUNT(*) FROM v_exposure WHERE city LIKE 'City of%'"
+    ).fetchone()[0] == 0
+
+
+def test_exposure_score_is_source_scale():
+    con = get_connection()
+    lo, hi = con.execute(
+        "SELECT MIN(exposure_score), MAX(exposure_score) FROM v_exposure"
+    ).fetchone()
+    assert 0.0 <= lo and hi <= 100.0
+    assert hi > 1.0  # 0-100 (BahaMap source scale), NOT 0-1

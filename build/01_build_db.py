@@ -27,7 +27,7 @@ DICTIONARY = [
     ("v_exposure", "health_total", "Mapped health facilities in the barangay (OpenStreetMap)"),
     ("v_exposure", "health_exposed", "Mapped health facilities inside the 25-year zone"),
     ("v_exposure", "infra_exposed", "Exposed schools + health facilities combined"),
-    ("v_exposure", "exposure_score", "Composite exposure score 0-1: 0.5*population + 0.3*area + 0.2*infrastructure, on the 25-year layer"),
+    ("v_exposure", "exposure_score", "Composite exposure score 0-100 (higher = more exposed): weighted 0.5*population + 0.3*area + 0.2*infrastructure on normalized components, 25-year layer; same scale as the BahaMap atlas"),
     ("v_exposure", "rank_ncr", "Rank by exposure_score, 1 = most exposed of 1,710 NCR barangays"),
     ("v_city_league", "city", "City/municipality"),
     ("v_city_league", "n_barangays", "Barangays in the city"),
