@@ -1,5 +1,4 @@
 import pytest
-from pathlib import Path
 
 from bahatanong_mcp.paths import BAHAMAP_PROCESSED, DATA_DIR
 

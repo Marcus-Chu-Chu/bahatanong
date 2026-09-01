@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from agent.client import MODEL
 from agent.graph import run_agent
 
-PROMPT = "agent/prompts/v1.md"  # the experiment outcome: V2 refuted (Task 12) - V1 ships
+PROMPT = "agent/prompts/v1.md"  # T12 amended outcome: null result - V1 ships (simpler prompt, higher point estimate)
 OUT = Path("app/showcase.json")
 
 QUESTIONS = [

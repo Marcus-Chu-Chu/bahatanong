@@ -5,8 +5,8 @@ Run: bahatanong-mcp   (or: python -m bahatanong_mcp.server)
 SDK note: the installed `mcp` SDK is 2.x, where `mcp.server.fastmcp.FastMCP`
 was renamed to `mcp.server.mcpserver.MCPServer` (same decorator/run API,
 mechanical rename only - see the ModuleNotFoundError raised by the old
-import path for the migration pointer). pyproject.toml's `mcp>=1.2` has no
-upper bound, so CI resolves 2.x too; importing the old path would break there
+import path for the migration pointer). pyproject.toml's dependency floor
+is `mcp>=2.0`, so CI resolves 2.x; importing the old path would break there
 as well, not just locally.
 """
 import json

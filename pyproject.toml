@@ -11,13 +11,16 @@ requires-python = ">=3.12"
 license = { text = "MIT" }
 authors = [{ name = "Marcus Chu", email = "gilmlachu@gmail.com" }]
 dependencies = [
-    "duckdb>=1.1",
+    "duckdb>=1.5",
     "sqlglot>=25.0",
-    "chromadb>=0.5.5",
+    "chromadb>=1.5",
     "sentence-transformers>=3.1",
     "rapidfuzz>=3.9",
     "mcp>=2.0",
 ]
+
+[project.urls]
+Repository = "https://github.com/Marcus-Chu-Chu/bahatanong"
 
 [project.scripts]
 bahatanong-mcp = "bahatanong_mcp.server:main"

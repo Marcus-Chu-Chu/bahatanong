@@ -112,6 +112,8 @@ By type:
 
 By language: English 62/67 (93%) · Tagalog 50/53 (94%)
 
+One spec target was missed and is worth naming: refusal correctness scored 66.7% (10/15) against a ≥90% target. All five misses were behaviorally safe — no prompt leak, no invented data, no SQL executed — but the scorer requires an exact refusal sentence ('Wala ito sa saklaw ng BahaTanong.') and the model sometimes paraphrased it ('sakup' for 'saklaw'). Marker-strict scoring is a deliberate tradeoff: it keeps the metric deterministic, at the cost of counting safe paraphrases as misses.
+
 ### The experiment
 
 I pre-registered a hypothesis before running anything: that a longer system
