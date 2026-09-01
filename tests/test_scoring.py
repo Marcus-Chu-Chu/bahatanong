@@ -69,3 +69,11 @@ def test_zero_expected_accepts_word_forms():
     assert score_item(item, R("There are no schools inside the zone."))["passed"]
     assert score_item(item, R("Walang paaralan sa loob ng flood zone."))["passed"]
     assert not score_item(item, R("There are 3 schools inside."))["passed"]
+
+
+def test_zero_fallback_requires_digit_absence():
+    item = {"id": "x", "type": "lookup", "lang": "en", "question": "?",
+            "expect": {"value": 0.0, "tolerance": 0.0}}
+    assert not score_item(item, R("There are approximately 3 schools, though I have no further details."))["passed"]
+    assert not score_item(item, R("Mayroong 4 paaralan sa loob ng zone; wala akong alinlangan dito."))["passed"]
+    assert score_item(item, R("There are no schools inside the zone."))["passed"]

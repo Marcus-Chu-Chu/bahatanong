@@ -1,10 +1,6 @@
 """Deterministic scoring - no LLM judge. Every rule is inspectable and testable."""
 import json
 import re
-import sys
-from pathlib import Path
-
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 _RP_LABEL = re.compile(r"\b(5|25|100)[-\s]?(year|yr|taon|taong)\b", re.IGNORECASE)
 _ZERO_WORDS = ("none", "zero", "no ", "wala")
@@ -19,10 +15,12 @@ def _numbers_in(text: str) -> list[float]:
 
 
 def _value_present(answer: str, value: float, tolerance: float) -> bool:
-    if any(abs(n - value) <= max(tolerance, 1e-9) for n in _numbers_in(answer)):
+    nums = _numbers_in(answer)
+    if any(abs(n - value) <= max(tolerance, 1e-9) for n in nums):
         return True
-    if value == 0:
-        # "There are no schools" / "Walang paaralan" state zero without a digit.
+    if value == 0 and not nums:
+        # "There are no schools" / "Walang paaralan" state zero without a digit -
+        # but any digit present means the model committed to a (wrong) number.
         low = answer.lower()
         return any(w in low for w in _ZERO_WORDS)
     return False
