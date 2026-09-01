@@ -184,18 +184,12 @@ its own comparison, not read off this one's non-significant point estimate.
   consistent with either "no real effect" or "a real effect too small for this
   N to detect reliably" - this experiment cannot distinguish those two
   possibilities, and neither should be claimed over the other.
-- **Retrieval nondeterminism across processes (HNSW).** `search_briefs` is backed
-  by an HNSW approximate-nearest-neighbor index; result ordering/selection for
-  near-tied candidates is not guaranteed identical across separate process runs
-  even at the same query and temperature-0 model settings. This is visible directly
-  in the data: V1-amended (93.3%, 112/120) differs from the original V1 run (95.0%,
-  114/120) despite an unchanged prompt, unchanged golden set, and unchanged scorer -
-  the only thing that differs is wall-clock run and, for qualitative items,
-  whatever the retrieval layer returned that time. This is also why the original
-  analysis's two unconfirmed suspects (`qual-009`, `qual-012`) were left as
-  "unconfirmable" rather than hand-patched: reconstructing what a *past* process's
-  retrieval call would have returned is not reliable, which is itself part of why
-  a rerun - not post-hoc rescoring - is the amendment of record.
+- **Run-to-run nondeterminism:** from HNSW-backed retrieval ranking for
+  search-dependent items, and from ordinary temperature-0 LLM sampling variance in
+  generated text and tool choice more generally (e.g., ref-009's refusal-marker
+  wording changed between identical V1 runs with no retrieval involved; qual-020's
+  tool strategy changed). The V1 95.0% -> 93.3% shift between identical runs
+  reflects both mechanisms; single runs per arm cannot separate them.
 
 ## Cost accounting
 
