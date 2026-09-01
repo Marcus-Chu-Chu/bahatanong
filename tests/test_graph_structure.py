@@ -48,3 +48,38 @@ def test_ungrounded_answer_triggers_exactly_one_retry():
     assert state["violations"] == [999999.0]
     # Final answer must carry the could-not-verify caveat, not the raw hallucination.
     assert "could not verify" in state["messages"][-1].content.lower()
+
+
+def test_run_agent_contract_offline(monkeypatch):
+    # Exercises run_agent itself (trace stitching, usage, key shape) with no API.
+    # The parallel tool calls would FAIL under positional reversed-fill stitching.
+    import agent.graph as G
+    fake = BindableFake(responses=[
+        AIMessage(content="", tool_calls=[
+            {"name": "glossary_lookup", "id": "c1", "args": {"term": "return_period"}},
+            {"name": "get_schema", "id": "c2", "args": {}},
+        ]),
+        AIMessage(content="Flood zones are model scenarios. Source: glossary"),
+    ])
+    monkeypatch.setattr(G, "make_llm", lambda model=None: fake)
+    out = G.run_agent("What does return period mean?")
+    assert set(out) == {"answer", "language", "tool_trace", "violations", "retried", "usage"}
+    assert out["language"] == "en" and out["violations"] == []
+    assert out["tool_trace"][0]["tool"] == "glossary_lookup"
+    assert "return_period" in out["tool_trace"][0]["result"]
+    assert out["tool_trace"][1]["tool"] == "get_schema"
+    assert "views" in out["tool_trace"][1]["result"]
+
+
+def test_caveat_language_follows_question(monkeypatch):
+    # A Tagalog question with persistent EN-shaped hallucinations must still get
+    # the Tagalog caveat - the "language" field and the answer must agree.
+    import agent.graph as G
+    fake = BindableFake(responses=[
+        AIMessage(content="May 999,999 residente. Source: v_exposure"),
+        AIMessage(content="May 888,888 pa rin. Source: v_exposure"),
+    ])
+    monkeypatch.setattr(G, "make_llm", lambda model=None: fake)
+    out = G.run_agent("Ilan ang residente ng Malanday sa Marikina?")
+    assert out["language"] == "tl"
+    assert "na-verify" in out["answer"]  # Tagalog caveat, not the English one

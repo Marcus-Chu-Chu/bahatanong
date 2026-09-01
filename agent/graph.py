@@ -96,11 +96,13 @@ def build_graph(llm, system_prompt: str, language: str):
             return {"messages": [feedback], "retries": state["retries"] + 1,
                     "violations": violations}
         if violations:  # second failure: strip to caveat instead of shipping bad numbers
-            lang = "tl" if "saklaw" in answer else detect(answer)
+            # Use the QUESTION's language (closure param) - detecting from the bad
+            # answer could disagree with the "language" field run_agent reports.
             fixed = AIMessage(
-                "I can only share what I could verify against the atlas." + CAVEAT[lang]
-                if lang == "en" else
-                "Ang maibabahagi ko lang ay ang na-verify ko sa atlas." + CAVEAT["tl"]
+                ("I can only share what I could verify against the atlas."
+                 if language == "en"
+                 else "Ang maibabahagi ko lang ay ang na-verify ko sa atlas.")
+                + CAVEAT[language]
             )
             return {"messages": [fixed], "violations": violations}
         return {"violations": []}
@@ -130,19 +132,24 @@ def run_agent(question: str, prompt_path: str = "agent/prompts/v1.md",
         {"messages": [HumanMessage(question)], "retries": 0, "violations": []},
         config={"recursion_limit": 25},
     )
-    trace, usage = [], {"input_tokens": 0, "output_tokens": 0}
+    trace, by_id, usage = [], {}, {"input_tokens": 0, "output_tokens": 0}
     for m in state["messages"]:
         if m.type == "ai":
             meta = getattr(m, "usage_metadata", None) or {}
             usage["input_tokens"] += meta.get("input_tokens", 0)
             usage["output_tokens"] += meta.get("output_tokens", 0)
             for tc in getattr(m, "tool_calls", []) or []:
-                trace.append({"tool": tc["name"], "args": tc["args"], "result": None})
+                entry = {"tool": tc["name"], "args": tc["args"], "result": None}
+                trace.append(entry)
+                by_id[tc["id"]] = entry
         elif m.type == "tool":
-            for t in reversed(trace):
-                if t["result"] is None:
-                    t["result"] = m.content[:2000]
-                    break
+            # Match by tool_call_id - positional fill misattributes results when
+            # one AI turn makes parallel tool calls (ToolNode emits in call order,
+            # but a reversed scan pairs them backwards).
+            entry = by_id.get(getattr(m, "tool_call_id", None))
+            if entry is not None:
+                content = m.content if isinstance(m.content, str) else str(m.content)
+                entry["result"] = content[:2000]
     answer = state["messages"][-1].content
     return {"answer": answer if isinstance(answer, str) else str(answer),
             "language": lang, "tool_trace": trace,
