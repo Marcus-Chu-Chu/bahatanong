@@ -28,6 +28,8 @@ def main() -> None:
     ap.add_argument("--subset", type=int)
     ap.add_argument("--model", default=MODEL)
     args = ap.parse_args()
+    if args.subset is not None and args.subset <= 0:
+        ap.error("--subset must be positive")
 
     items = [json.loads(l) for l in GOLDEN.read_text(encoding="utf-8").splitlines() if l.strip()]
     if args.subset:
@@ -41,8 +43,9 @@ def main() -> None:
         try:
             result = run_agent(item["question"], prompt_path=args.prompt, model=args.model)
         except Exception as e:  # API failure -> scored as fail, run continues
-            result = {"answer": f"[RUN ERROR] {e}", "violations": [], "tool_trace": [],
-                      "language": item["lang"], "retried": False,
+            result = {"answer": f"[RUN ERROR] {e}",
+                      "violations": [-1.0],  # marks the row ungrounded in aggregates
+                      "tool_trace": [], "language": item["lang"], "retried": False,
                       "usage": {"input_tokens": 0, "output_tokens": 0}}
         score = score_item(item, result)
         rows.append({"item": item, "result": result, "score": score})

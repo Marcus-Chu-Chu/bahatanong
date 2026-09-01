@@ -52,3 +52,20 @@ def test_refuse_markers():
     assert score_item(item, R("Sorry - This is outside what BahaTanong can answer."))["passed"]
     assert score_item(item, R("Did you mean Talon Dos?"))["passed"]
     assert not score_item(item, R("Here is my forecast: heavy flooding."))["passed"]
+
+
+def test_rp_label_boilerplate_cannot_satisfy_expected_value():
+    item = {"id": "x", "type": "lookup", "lang": "en", "question": "?",
+            "expect": {"value": 100.0, "tolerance": 1.0}}
+    wrong = R("About 45% lies in the zone; under the 100-year scenario it's ~52%.")
+    assert not score_item(item, wrong)["passed"]
+    right = R("100.0% of its land lies in the 25-year Medium/High flood zone.")
+    assert score_item(item, right)["passed"]
+
+
+def test_zero_expected_accepts_word_forms():
+    item = {"id": "x", "type": "lookup", "lang": "en", "question": "?",
+            "expect": {"value": 0.0, "tolerance": 0.0}}
+    assert score_item(item, R("There are no schools inside the zone."))["passed"]
+    assert score_item(item, R("Walang paaralan sa loob ng flood zone."))["passed"]
+    assert not score_item(item, R("There are 3 schools inside."))["passed"]

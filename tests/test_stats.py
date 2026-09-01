@@ -21,3 +21,8 @@ def test_delta_pp():
     a = [True] * 50 + [False] * 50
     b = [True] * 60 + [False] * 40
     assert mcnemar_exact(a, b)["delta_pp"] == pytest.approx(10.0)
+
+
+def test_empty_vectors_raise():
+    with pytest.raises(ValueError):
+        mcnemar_exact([], [])
