@@ -26,17 +26,20 @@ def run_sql(query: str) -> dict:
 
 
 def get_schema() -> dict:
-    rows = get_connection().execute(
-        "SELECT view_name, column_name, description FROM data_dictionary ORDER BY view_name"
-    ).fetchall()
-    views: dict[str, list] = {}
-    for view, col, desc in rows:
-        views.setdefault(view, []).append({"column": col, "description": desc})
-    return {
-        "views": views,
-        "notes": "1,710 NCR barangays; percentages are 0-100; flood zones are Project "
-                 "NOAH scenarios, not history. Use glossary_lookup for definitions.",
-    }
+    try:
+        rows = get_connection().cursor().execute(
+            "SELECT view_name, column_name, description FROM data_dictionary ORDER BY view_name"
+        ).fetchall()
+        views: dict[str, list] = {}
+        for view, col, desc in rows:
+            views.setdefault(view, []).append({"column": col, "description": desc})
+        return {
+            "views": views,
+            "notes": "1,710 NCR barangays; percentages are 0-100; flood zones are Project "
+                     "NOAH scenarios, not history. Use glossary_lookup for definitions.",
+        }
+    except Exception as e:
+        return {"error": f"{type(e).__name__}: {e}"}
 
 
 def search_briefs(query: str, lang: str = "en", k: int = 4) -> dict:
@@ -48,6 +51,7 @@ def search_briefs(query: str, lang: str = "en", k: int = 4) -> dict:
 
 def get_brief(pcode: str, lang: str = "en") -> dict:
     try:
+        pcode = str(pcode)  # trust boundary: callers may hand us JSON numbers
         brief = search.get_brief_text(pcode, lang)
         if brief is not None:
             return brief
@@ -58,4 +62,8 @@ def get_brief(pcode: str, lang: str = "en") -> dict:
 
 
 def glossary_lookup(term: str = "") -> dict:
-    return glossary.lookup(term or None)
+    try:
+        term = str(term) if term is not None else ""
+        return glossary.lookup(term or None)
+    except Exception as e:
+        return {"error": f"{type(e).__name__}: {e}"}

@@ -41,3 +41,18 @@ def test_get_brief_by_pcode_roundtrip():
 def test_glossary_tool():
     assert tools.glossary_lookup("return_period")["term"] == "return_period"
     assert "terms" in tools.glossary_lookup("")
+
+
+def test_never_raise_on_malformed_inputs():
+    # The trust boundary: garbage input must come back as a dict, never an exception.
+    assert "terms" in tools.glossary_lookup(123)  # coerced to "123", no match -> list
+    out = tools.get_brief(12345, lang="en")
+    assert "error" in out and "12345" in out["error"]
+    assert isinstance(tools.search_briefs(None, lang="xx"), dict)
+
+
+def test_get_schema_never_raises(monkeypatch):
+    def boom():
+        raise RuntimeError("db gone")
+    monkeypatch.setattr(tools, "get_connection", boom)
+    assert tools.get_schema() == {"error": "RuntimeError: db gone"}
