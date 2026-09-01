@@ -10,6 +10,6 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 BAHAMAP_PROCESSED = Path(
     os.environ.get(
         "BAHAMAP_PROCESSED",
-        Path(__file__).resolve().parents[3].parent / "bahamap" / "data" / "processed",
+        Path(__file__).resolve().parents[3] / "bahamap" / "data" / "processed",
     )
 )
