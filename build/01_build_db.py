@@ -16,7 +16,7 @@ OUT = DATA_DIR / "bahatanong.duckdb"
 DICTIONARY = [
     ("v_exposure", "pcode", "PSGC barangay code (join key; also keys briefs)"),
     ("v_exposure", "barangay", "Barangay name"),
-    ("v_exposure", "city", "City/municipality in Metro Manila (NCR), natural short name (leading 'City of' removed, e.g. 'Marikina')"),
+    ("v_exposure", "city", "City/municipality in Metro Manila (NCR), normalized short name (e.g. 'Marikina', 'Pasay'; 'Quezon City' keeps its full name)"),
     ("v_exposure", "population", "2020 census population (PSA, reconciled to NCR total 13,484,462)"),
     ("v_exposure", "pct_area_5yr", "Percent (0-100) of land inside the Medium/High flood zone, 5-year scenario (Project NOAH). A scenario probability, NOT flood history"),
     ("v_exposure", "pct_area_25yr", "Percent (0-100) of land inside the Medium/High flood zone, 25-year scenario"),
@@ -56,7 +56,11 @@ def main() -> None:
 
     con.execute("""
         CREATE TABLE exposure AS
-        SELECT pcode, name AS barangay, REGEXP_REPLACE(city, '^City of ', '') AS city, CAST(population AS BIGINT) AS population,
+        SELECT pcode, name AS barangay,
+               CASE WHEN city = 'Pasay City' THEN 'Pasay'
+                    ELSE REGEXP_REPLACE(city, '^City of ', '')
+               END AS city,  -- 'City of Marikina'->'Marikina'; 'Pasay City'->'Pasay'; 'Quezon City' stays
+               CAST(population AS BIGINT) AS population,
                ROUND(100 * pct_area_mh_5, 1)   AS pct_area_5yr,
                ROUND(100 * pct_area_mh_25, 1)  AS pct_area_25yr,
                ROUND(100 * pct_area_mh_100, 1) AS pct_area_100yr,

@@ -52,11 +52,15 @@ def test_connection_is_read_only():
 
 
 def test_city_names_normalized():
+    # Exact set: a count/prefix check let 'Pasay City' slip through (trailing-suffix
+    # style). Spellings follow the source data (ñ included).
     con = get_connection()
-    assert con.execute("SELECT COUNT(DISTINCT city) FROM v_exposure").fetchone()[0] == 17
-    assert con.execute(
-        "SELECT COUNT(*) FROM v_exposure WHERE city LIKE 'City of%'"
-    ).fetchone()[0] == 0
+    cities = {r[0] for r in con.execute("SELECT DISTINCT city FROM v_exposure").fetchall()}
+    assert cities == {
+        "Caloocan", "Las Piñas", "Makati", "Malabon", "Mandaluyong", "Manila",
+        "Marikina", "Muntinlupa", "Navotas", "Parañaque", "Pasay", "Pasig",
+        "Pateros", "Quezon City", "San Juan", "Taguig", "Valenzuela",
+    }
 
 
 def test_exposure_score_is_source_scale():
