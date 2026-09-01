@@ -149,7 +149,10 @@ def run_agent(question: str, prompt_path: str = "agent/prompts/v1.md",
             entry = by_id.get(getattr(m, "tool_call_id", None))
             if entry is not None:
                 content = m.content if isinstance(m.content, str) else str(m.content)
-                entry["result"] = content[:2000]
+                # 8000, not 2000: the qualitative scorer checks pcode presence in
+                # this trace, and a k=10 search_briefs result runs ~6.5k chars -
+                # a 2000 cap silently mis-scored grounded answers (T12 amendment).
+                entry["result"] = content[:8000]
     answer = state["messages"][-1].content
     return {"answer": answer if isinstance(answer, str) else str(answer),
             "language": lang, "tool_trace": trace,
