@@ -17,7 +17,7 @@ OUT = Path("app/showcase.json")
 
 QUESTIONS = [
     ("Which barangay in Marikina has the most residents inside the 25-year flood zone?", "en"),
-    ("Aling barangay sa Marikina ang may pinakamaraming residente sa loob ng 25-year flood zone?", "tl"),
+    ("Aling barangay sa Marikina ang may pinakamaraming residenteng nakatira sa loob ng 25-year flood zone?", "tl"),
     ("What are the top 5 most flood-exposed barangays in Metro Manila?", "en"),
     ("Ano ang sitwasyon ng baha sa Rosario, Pasig?", "tl"),
     ("How many NCR residents in total are estimated to live inside the 25-year flood zone?", "en"),

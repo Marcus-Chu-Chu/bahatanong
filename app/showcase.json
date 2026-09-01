@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-09-01T20:47:47.513450+00:00",
+ "generated_at": "2026-09-01T21:11:04.479941+00:00",
  "prompt": "agent/prompts/v1.md",
  "model": "claude-haiku-4-5",
  "items": [
@@ -27,9 +27,9 @@
    }
   },
   {
-   "question": "Aling barangay sa Marikina ang may pinakamaraming residente sa loob ng 25-year flood zone?",
+   "question": "Aling barangay sa Marikina ang may pinakamaraming residenteng nakatira sa loob ng 25-year flood zone?",
    "lang": "tl",
-   "answer": "Ang Malanday ang barangay sa Marikina na may pinakamaraming residente sa loob ng 25-year flood zone, na may 49,597 residents na nasa Medium/High flood zone. Ang kabuuang populasyon ng barangay ay 53,886.\n\nSource: v_exposure",
+   "answer": "Ang Malanday ang barangay sa Marikina na may pinakamaraming residenteng nakatira sa loob ng 25-year flood zone, na may 49,597 residents na exposed sa Medium/High flood zone.\n\nSource: v_exposure",
    "tool_trace": [
     {
      "tool": "get_schema",
@@ -45,8 +45,8 @@
     }
    ],
    "usage": {
-    "input_tokens": 6562,
-    "output_tokens": 286
+    "input_tokens": 6575,
+    "output_tokens": 273
    }
   },
   {
@@ -70,12 +70,26 @@
   {
    "question": "Ano ang sitwasyon ng baha sa Rosario, Pasig?",
    "lang": "tl",
-   "answer": "Basahin ang detalye mula sa public-safety brief:\n\n**Ang sitwasyon ng baha sa Rosario, Pasig:**\n\nAng Rosario ay nangunguna sa flood exposure sa lahat ng 1,710 barangay sa Metro Manila. Sa 25-year flood scenario, 71% ng lupa ng barangay at humigit-kumulang 52,219 residente ay nasa Medium/High flood zone. Limang paaralan at anim na health facilities ay nasa zone din. \n\nTumataas ang exposure sa 57% sa 5-year scenario at 87% sa 100-year scenario. \n\n**Mga rekomendasyon para sa mga residente:**\n- Malaman ang evacuation plan ng barangay\n- Panatilihing waterproof ang importante dokumento\n- Maghanda ng emergency kit\n- Bantayan ang PAGASA weather advisories lalo na sa tag-ulan\n\nSource: Public-safety brief para sa Rosario, Pasig",
+   "answer": "Ang Rosario, Pasig ay **nangunguna sa flood exposure sa lahat ng 1,710 barangay sa Metro Manila**. \n\nNarito ang detalye ng sitwasyon:\n\n**Sa 25-year flood scenario** (may 1-sa-25 na pagkakataon mangyari bawat taon):\n- **70.6%** ng lupa ng barangay ay nasa Medium/High flood zone\n- Humigit-kumulang **52,219 residente** ang nakatira sa zone na ito\n- **5 paaralan** at **6 health facilities** ay nasa zone din\n\n**Sa ibang scenarios:**\n- Sa 5-year scenario: 57% ng lupa ay exposed\n- Sa 100-year scenario: 87% ng lupa ay exposed\n\n**Mga rekomendasyon para sa mga residente:**\n- Malaman ang evacuation plan ng barangay\n- Panatilihing waterproof ang mga importanteng dokumento\n- Maghanda ng emergency kit\n- Bantayan ang PAGASA weather advisories lalo na sa tag-ulan\n\nSource: Public-safety brief para sa Rosario, Pasig (PH1381200017)",
    "tool_trace": [
+    {
+     "tool": "search_briefs",
+     "args": {
+      "query": "Rosario Pasig flood",
+      "lang": "tl",
+      "k": 4
+     },
+     "result": "{\"results\": [{\"pcode\": \"PH1381500012\", \"barangay\": \"Santa Ana\", \"city\": \"Taguig\", \"lang\": \"tl\", \"text\": \"Ang Santa Ana sa Taguig ay may 26% ng lupa nito sa Medium/High flood zone sa 25-year flood scenario—may 1-sa-25 na pagkakataon mangyari bawat taon. Mga 5,847 residente ang nakatira dito. Isang paaralan ang nasa zone. Sa 100-year scenario, 39% ng barangay ay exposed. Dapat malaman ninyo ang evacuation plan ng barangay, panatilihing ligtas ang mga importanteng dokumento, at bantayan ang PAGASA weather updates tuwing malakas ang ulan. Maghanda ng emergency kit at alamin kung saan ang mas mataas na lugar.\", \"distance\": 0.3503}, {\"pcode\": \"PH1380200011\", \"barangay\": \"B. F. International Village\", \"city\": \"Las Piñas\", \"lang\": \"tl\", \"text\": \"Ang B. F. International Village sa Las Piñas ay may 9% ng lupa nito sa Medium/High flood zone sa 25-year flood scenario. Mga 7,240 residente ang nakatira sa zone na ito. May isang health facility na matatagpuan dito. Ang barangay ay nangunguna sa 932 sa flood exposure sa 1,710 barangay ng Metro Manila. Dapat malaman ng mga residente ang evacuation plan ng barangay, panatilihing waterproof ang mga importanteng dokumento, at bantayan ang PAGASA weather advisories sa panahon ng ulan. Maghanda ng emergency kit at alamin ang ligtas na daan papunta sa mas mataas na lugar.\", \"distance\": 0.3787}, {\"pcode\": \"PH1380300009\", \"barangay\": \"Guadalupe Nuevo\", \"city\": \"Makati\", \"lang\": \"tl\", \"text\": \"Ang Guadalupe Nuevo (Makati) ay may mababang flood exposure kumpara sa ibang barangay sa Metro Manila. Ayon sa modelo, 5–11% ng lupa ng barangay ay nasa Medium/High flood zone sa iba't ibang flood scenarios. Mga 1,286 residente ang nakatira sa 25-year flood zone; isang paaralan ang naka-map doon. Ito ay modelo lamang, hindi historical na datos. Dapat malaman ng mga nakatira dito ang evacuation plan, panatilihing ligtas ang mga dokumento, at sundin ang PAGASA weather advisories tuwing tag-ulan.\", \"distance\": 0.3833}, {\"pcode\": \"PH1380900012\", \"barangay\": \"San Roque\", \"city\": \"Navotas\", \"lang\": \"tl\", \"text\": \"Ang San Roque, City of Navotas ay may katamtamang flood exposure. Sa isang 25-year flood scenario, mga 11% ng lupa ng barangay—kung saan nakatira ang mga 2,219 residents—ay nasa Medium/High flood zone. Tumataas ito sa 17% sa isang 100-year scenario. Walang paaralan o health facility na nakalagay sa 25-year zone. Dapat malaman ng mga residente ang evacuation plan ng barangay, panatilihing waterproof ang mga importanteng dokumento, at bantayan ang PAGASA weather advisories tuwing tag-ulan. Maghanda ng emergency kit at alamin ang ligtas na daan papunta sa mas mataas na lugar.\", \"distance\": 0.3848}]}"
+    },
+    {
+     "tool": "get_schema",
+     "args": {},
+     "result": "{\"views\": {\"v_city_league\": [{\"column\": \"city\", \"description\": \"City/municipality\"}, {\"column\": \"city_rank\", \"description\": \"Rank by exposure_share_pct, 1 = highest\"}, {\"column\": \"exposure_share_pct\", \"description\": \"Percent (0-100) of city population inside the 25-year zone\"}, {\"column\": \"est_pop_exposed_25yr\", \"description\": \"City residents inside the 25-year zone (sum)\"}, {\"column\": \"population\", \"description\": \"City 2020 population (sum of barangays)\"}, {\"column\": \"n_barangays\", \"description\": \"Barangays in the city\"}], \"v_exposure\": [{\"column\": \"pcode\", \"description\": \"PSGC barangay code (join key; also keys briefs)\"}, {\"column\": \"est_pop_exposed_25yr\", \"description\": \"Estimated residents inside the 25-year Medium/High zone\"}, {\"column\": \"schools_total\", \"description\": \"Mapped schools in the barangay (OpenStreetMap)\"}, {\"column\": \"schools_exposed\", \"description\": \"Mapped schools inside the 25-year zone\"}, {\"column\": \"health_total\", \"description\": \"Mapped health facilities in the barangay (OpenStreetMap)\"}, {\"column\": \"health_exposed\", \"description\": \"Mapped health facilities inside the 25-year zone\"}, {\"column\": \"infra_exposed\", \"description\": \"Exposed schools + health facilities combined\"}, {\"column\": \"exposure_score\", \"description\": \"Composite exposure score 0-100 (higher = more exposed): weighted 0.5*population + 0.3*area + 0.2*infrastructure on normalized components, 25-year layer; same scale as the BahaMap atlas\"}, {\"column\": \"rank_ncr\", \"description\": \"Rank by exposure_score, 1 = most exposed of 1,710 NCR barangays\"}, {\"column\": \"city\", \"description\": \"City/municipality in Metro Manila (NCR), normalized short name (e.g. 'Marikina', 'Pasay'; 'Quezon City' keeps its full name)\"}, {\"column\": \"pct_area_100yr\", \"description\": \"Percent (0-100) of land inside the Medium/High flood zone, 100-year scenario\"}, {\"column\": \"pct_area_25yr\", \"description\": \"Percent (0-100) of land inside the Medium/High flood zone, 25-year scenario\"}, {\"column\": \"pct_area_5yr\", \"description\": \"Percent (0-100) of land inside the Medium/High flood zone, 5-year scenario (Project NOAH). A scenario probability, NOT flood history\"}, {\"column\": \"population\", \"description\": \"2020 census population (PSA, reconciled to NCR total 13,484,462)\"}, {\"column\": \"barangay\", \"description\": \"Barangay name\"}], \"v_rainfall\": [{\"column\": \"year\", \"description\": \"Calendar year (Open-Meteo ERA5 reanalysis, Metro Manila)\"}, {\"column\": \"max_daily_mm\", \"description\": \"Highest single-day rainfall that year, millimetres\"}, {\"column\": \"days_ge_50\", \"description\": \"Days with at least 50 mm of rain\"}, {\"column\": \"days_ge_100\", \"description\": \"Days with at least 100 mm of rain (only metric with a significant trend: +0.07 days/decade, p=.047)\"}, {\"column\": \"total_mm\", \"description\": \"Total rainfall that year, millimetres\"}]}, \"notes\": \"1,710 NCR barangays; percentages are 0-100; flood zones are Project NOAH scenarios, not history. Use glossary_lookup for definitions.\"}"
+    },
     {
      "tool": "run_sql",
      "args": {
-      "query": "SELECT pcode, barangay, city FROM v_exposure WHERE barangay LIKE '%Rosario%' AND city LIKE '%Pasig%'"
+      "query": "SELECT pcode, barangay, city FROM v_exposure WHERE barangay = 'Rosario' AND city = 'Pasig' LIMIT 1"
      },
      "result": "{\"columns\": [\"pcode\", \"barangay\", \"city\"], \"rows\": [[\"PH1381200017\", \"Rosario\", \"Pasig\"]], \"row_count\": 1}"
     },
@@ -90,14 +104,14 @@
     {
      "tool": "run_sql",
      "args": {
-      "query": "SELECT barangay, city, exposure_score, medium_high_zone_pct FROM v_exposure WHERE pcode = 'PH1381200017'"
+      "query": "SELECT barangay, city, population, est_pop_exposed_25yr, pct_area_25yr, pct_area_100yr, schools_exposed, health_exposed, exposure_score, rank_ncr FROM v_exposure WHERE pcode = 'PH1381200017'"
      },
-     "result": "{\"error\": \"BinderException: Binder Error: Referenced column \\\"medium_high_zone_pct\\\" not found in FROM clause!\\nCandidate bindings: \\\"health_total\\\"\\n\\nLINE 1: SELECT barangay, city, exposure_score, medium_high_zone_pct FROM v_exposure WHERE pcode = 'PH13812...\\n                                               ^\", \"hint\": \"Only a single SELECT statement over v_exposure, v_city_league, v_rainfall, or data_dictionary is allowed (row cap 200). Rewrite the query.\"}"
+     "result": "{\"columns\": [\"barangay\", \"city\", \"population\", \"est_pop_exposed_25yr\", \"pct_area_25yr\", \"pct_area_100yr\", \"schools_exposed\", \"health_exposed\", \"exposure_score\", \"rank_ncr\"], \"rows\": [[\"Rosario\", \"Pasig\", 73979, 52219, 70.6, 87.0, 5, 6, 100.0, 1]], \"row_count\": 1}"
     }
    ],
    "usage": {
-    "input_tokens": 5363,
-    "output_tokens": 578
+    "input_tokens": 12894,
+    "output_tokens": 804
    }
   },
   {
@@ -179,7 +193,7 @@
   {
    "question": "Paano dapat maghanda sa baha ang mga taga-Tumana, Marikina?",
    "lang": "tl",
-   "answer": "Batay sa BahaMap data, narito ang mga hakbang na dapat gawin ng mga taga-Tumana, Marikina para maghanda sa baha:\n\n**Mataas ang flood risk sa Tumana:**\n- Ang Tumana ay ika-13 sa flood exposure sa buong Metro Manila\n- Sa 25-year flood scenario, 63% ng lupa ng barangay ay nasa Medium/High flood zone\n- Mga 29,671 residente at 3 paaralan ang estimated na exposed sa zone na ito\n\n**Mga dapat gawin para maghanda:**\n\n1. **Alamin ang evacuation plan** – Makipag-ugnayan sa barangay para malaman kung saan ang designated evacuation centers at ligtas na ruta papunta sa mas mataas na lugar\n\n2. **Panatilihing ligtas ang mga importanteng dokumento** – Ilagay ang birth certificates, property papers, at iba pang mahalagang records sa waterproof container o sa mas mataas na lugar\n\n3. **Sundan ang PAGASA weather advisories** – Bantayan ang weather updates tuwing tag-ulan upang malaman kung kailan dapat mag-evacuate\n\n4. **Maghanda ng emergency kit** – Kasama dito ang tubig, pagkain, first aid, flashlight, at iba pang essentials na kailangan sa emergency\n\nAng paghahanda ay nagsasalba ng buhay, kaya't importante na kumilos ngayon pa lang.\n\nSource: Public-safety brief para sa Tumana, Marikina",
+   "answer": "Batay sa BahaMap data, narito ang mga dapat gawin ng mga taga-Tumana, Marikina para maghanda sa baha:\n\n**Mataas ang flood exposure ng Tumana** — ika-13 sa buong Metro Manila. Ayon sa Project NOAH models, 63% ng lupa ng barangay ay nasa Medium/High flood zone sa 25-year flood scenario, na may estimated na 29,671 residente at 3 paaralan na exposed.\n\n**Mga hakbang na dapat gawin:**\n\n1. **Alamin ang evacuation plan ng barangay** — Makipag-ugnayan sa barangay hall para malaman kung saan ang designated evacuation centers at ligtas na ruta papunta sa mas mataas na lugar.\n\n2. **Panatilihing ligtas ang mga importanteng dokumento** — Ilagay ang mga ito sa waterproof container o sa mas mataas na lugar sa bahay.\n\n3. **Maghanda ng emergency kit** — Kasama dito ang tubig, pagkain, first aid, flashlight, at iba pang essentials.\n\n4. **Sundan ang PAGASA weather advisories** — Laging bantayan ang weather updates tuwing tag-ulan para sa early warning.\n\n5. **Alamin ang ligtas na ruta** — Magtukoy ng daan papunta sa mas mataas na lugar na mabilis at ligtas.\n\nSource: Public-safety brief para sa Tumana, Marikina.",
    "tool_trace": [
     {
      "tool": "search_briefs",
@@ -192,9 +206,9 @@
     {
      "tool": "run_sql",
      "args": {
-      "query": "SELECT pcode, barangay, city FROM v_exposure WHERE barangay LIKE '%Tumana%' OR city LIKE '%Marikina%' LIMIT 20"
+      "query": "SELECT pcode, barangay, city FROM v_exposure WHERE barangay LIKE '%Tumana%' OR barangay LIKE '%tumana%'"
      },
-     "result": "{\"columns\": [\"pcode\", \"barangay\", \"city\"], \"rows\": [[\"PH1380700001\", \"Barangka\", \"Marikina\"], [\"PH1380700002\", \"Calumpang\", \"Marikina\"], [\"PH1380700003\", \"Concepcion Uno\", \"Marikina\"], [\"PH1380700004\", \"Jesus De La Peña\", \"Marikina\"], [\"PH1380700005\", \"Malanday\", \"Marikina\"], [\"PH1380700006\", \"Nangka\", \"Marikina\"], [\"PH1380700007\", \"Parang\", \"Marikina\"], [\"PH1380700008\", \"San Roque\", \"Marikina\"], [\"PH1380700009\", \"Santa Elena\", \"Marikina\"], [\"PH1380700010\", \"Santo Niño\", \"Marikina\"], [\"PH1380700011\", \"Tañong\", \"Marikina\"], [\"PH1380700012\", \"Concepcion Dos\", \"Marikina\"], [\"PH1380700013\", \"Marikina Heights\", \"Marikina\"], [\"PH1380700014\", \"Industrial Valley\", \"Marikina\"], [\"PH1380700015\", \"Fortune\", \"Marikina\"], [\"PH1380700016\", \"Tumana\", \"Marikina\"]], \"row_count\": 16}"
+     "result": "{\"columns\": [\"pcode\", \"barangay\", \"city\"], \"rows\": [[\"PH1380700016\", \"Tumana\", \"Marikina\"]], \"row_count\": 1}"
     },
     {
      "tool": "get_brief",
@@ -206,8 +220,8 @@
     }
    ],
    "usage": {
-    "input_tokens": 9772,
-    "output_tokens": 737
+    "input_tokens": 9153,
+    "output_tokens": 706
    }
   },
   {
@@ -236,7 +250,7 @@
   {
    "question": "What does 'exposure score' mean in this atlas?",
    "lang": "en",
-   "answer": "In this atlas, **exposure_score** is a composite flood-exposure score ranging from 0 to 100, where higher values indicate greater exposure. It combines three weighted components, all based on the 25-year Medium/High flood scenario:\n\n- **0.5** of the score comes from the normalized exposed population\n- **0.3** comes from the normalized share of flooded land\n- **0.2** comes from the normalized exposed infrastructure\n\nThe score is used to rank all 1,710 NCR barangays, with rank 1 representing the most exposed barangay in Metro Manila.\n\nSource: glossary_lookup",
+   "answer": "**Exposure score** is a composite flood-exposure score from 0 to 100 (higher = more exposed). It combines three weighted factors, all based on the 25-year Medium/High flood layer:\n\n- **0.5** of the score comes from the normalized exposed population\n- **0.3** comes from the normalized flooded land share\n- **0.2** comes from the normalized exposed infrastructure\n\nThe score ranks all 1,710 NCR barangays on the same scale as the BahaMap atlas, where rank 1 = most exposed.\n\nSource: glossary_lookup",
    "tool_trace": [
     {
      "tool": "glossary_lookup",
@@ -247,24 +261,24 @@
     }
    ],
    "usage": {
-    "input_tokens": 4902,
-    "output_tokens": 338
+    "input_tokens": 4896,
+    "output_tokens": 326
    }
   },
   {
    "question": "Babaha ba bukas sa Marikina?",
    "lang": "tl",
-   "answer": "Wala ito sa saklaw ng BahaTanong. Ang BahaTanong ay sumasagot lamang tungkol sa flood-exposure data ng mga barangay sa Metro Manila base sa Project NOAH flood-zone models, hindi sa weather forecasting o flood predictions para sa hinaharap.\n\nKung gusto mong malaman ang flood-exposure profile ng isang barangay sa Marikina o kung aling mga lugar doon ang nasa medium/high flood zone, pwede akong tumulong doon.",
+   "answer": "Wala ito sa saklaw ng BahaTanong. Ang BahaTanong ay sumasagot lamang sa mga tanong tungkol sa flood exposure at risk sa mga barangay ng Metro Manila batay sa Project NOAH flood-zone models, hindi sa weather forecasting o flood predictions para sa hinaharap.\n\nKung gusto mong malaman ang flood-exposure profile ng isang barangay sa Marikina o kung aling mga lugar ang nasa medium/high flood zone, pwede akong tumulong doon.",
    "tool_trace": [],
    "usage": {
-    "input_tokens": 3076,
-    "output_tokens": 252
+    "input_tokens": 1447,
+    "output_tokens": 127
    }
   },
   {
    "question": "Compare flood exposure between Malanday and Manggahan.",
    "lang": "en",
-   "answer": "I found two barangays named Malanday (one in Valenzuela and one in Marikina). Here's the comparison:\n\n**Malanday, Marikina** vs **Manggahan, Pasig:**\n\n| Metric | Malanday (Marikina) | Manggahan (Pasig) |\n|--------|-------------------|------------------|\n| **Exposure Score** | 98.7 | 90.3 |\n| **NCR Rank** | 2 (most exposed) | 4 |\n| **Population** | 53,886 | 88,078 |\n| **Est. Pop. Exposed (25-yr zone)** | 49,597 | 53,440 |\n| **% Area in 25-yr zone** | 92.0% | 60.7% |\n| **Infrastructure Exposed** | 6 facilities | 5 facilities |\n\n**Summary:** Malanday in Marikina has the higher exposure score (98.7 vs 90.3) and ranks 2nd most exposed in all of NCR. Nearly all of its land (92.0%) falls within the 25-year Medium/High flood zone, and 92% of its population is exposed. Manggahan in Pasig ranks 4th with a lower exposure score, though it has a larger total population; 60.7% of its area is in the 25-year zone.\n\nSource: v_exposure",
+   "answer": "I found three results—two Malanday entries (one in Marikina, one in Valenzuela) and one Manggahan (in Pasig). Here's the comparison:\n\n**Malanday, Marikina** (the more exposed one):\n- **Exposure score:** 98.7 (rank 2 of 1,710 NCR barangays—second most exposed)\n- **Population:** 53,886\n- **Estimated residents in 25-year flood zone:** 49,597\n- **Land in 25-year zone:** 92.0%\n- **Exposed infrastructure:** 6 facilities (schools + health)\n\n**Manggahan, Pasig**:\n- **Exposure score:** 90.3 (rank 4 of 1,710 NCR barangays)\n- **Population:** 88,078\n- **Estimated residents in 25-year flood zone:** 53,440\n- **Land in 25-year zone:** 60.7%\n- **Exposed infrastructure:** 5 facilities\n\n**Summary:** Malanday in Marikina has higher flood exposure (score 98.7 vs 90.3), with 92% of its land in the Medium/High 25-year flood zone compared to Manggahan's 60.7%. Although Manggahan has a larger population overall, Malanday has a higher proportion of residents exposed (49,597 of 53,886 vs 53,440 of 88,078).\n\n*Note: There is also a Malanday in Valenzuela (exposure score 37.9, rank 266), which is much less exposed.*\n\nSource: v_exposure",
    "tool_trace": [
     {
      "tool": "run_sql",
@@ -281,14 +295,14 @@
     {
      "tool": "run_sql",
      "args": {
-      "query": "SELECT barangay, city, exposure_score, rank_ncr, population, est_pop_exposed_25yr, pct_area_25yr, infra_exposed FROM v_exposure WHERE barangay IN ('Malanday', 'Manggahan') ORDER BY barangay"
+      "query": "SELECT barangay, city, exposure_score, rank_ncr, population, est_pop_exposed_25yr, pct_area_25yr, infra_exposed FROM v_exposure WHERE barangay IN ('Malanday', 'Manggahan') ORDER BY exposure_score DESC"
      },
-     "result": "{\"columns\": [\"barangay\", \"city\", \"exposure_score\", \"rank_ncr\", \"population\", \"est_pop_exposed_25yr\", \"pct_area_25yr\", \"infra_exposed\"], \"rows\": [[\"Malanday\", \"Valenzuela\", 37.9, 266, 19060, 12225, 64.1, 0], [\"Malanday\", \"Marikina\", 98.7, 2, 53886, 49597, 92.0, 6], [\"Manggahan\", \"Pasig\", 90.3, 4, 88078, 53440, 60.7, 5]], \"row_count\": 3}"
+     "result": "{\"columns\": [\"barangay\", \"city\", \"exposure_score\", \"rank_ncr\", \"population\", \"est_pop_exposed_25yr\", \"pct_area_25yr\", \"infra_exposed\"], \"rows\": [[\"Malanday\", \"Marikina\", 98.7, 2, 53886, 49597, 92.0, 6], [\"Manggahan\", \"Pasig\", 90.3, 4, 88078, 53440, 60.7, 5], [\"Malanday\", \"Valenzuela\", 37.9, 266, 19060, 12225, 64.1, 0]], \"row_count\": 3}"
     }
    ],
    "usage": {
-    "input_tokens": 8834,
-    "output_tokens": 643
+    "input_tokens": 8835,
+    "output_tokens": 695
    }
   }
  ]
