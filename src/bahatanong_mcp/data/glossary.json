@@ -1,0 +1,9 @@
+{
+  "exposure_score": "Composite flood-exposure score from 0 to 100 (higher = more exposed): 0.5 x normalized exposed population + 0.3 x normalized flooded land share + 0.2 x normalized exposed infrastructure, all computed on the 25-year Medium/High flood layer; same scale as the BahaMap atlas. rank_ncr ranks all 1,710 NCR barangays by this score (1 = most exposed).",
+  "return_period": "An 'N-year flood' is a severity with a 1-in-N chance of occurring in any given year - a Project NOAH model scenario, NOT a historical record and NOT how often the area floods. Never describe pct_area figures as past flooding. Zones are always 'Medium/High flood zone' at every return period (5, 25, 100).",
+  "est_pop_exposed": "Estimated residents living inside the 25-year Medium/High flood zone, out of the barangay's 2020 census population. An overlay estimate, not a headcount.",
+  "data_sources": "Hazard zones: Project NOAH 5/25/100-year Medium/High rasters (UP NOAH / LiPAD). Boundaries: PSGC barangay shapefiles. Population: PSA 2020 census, reconciled exactly to NCR total 13,484,462 (10 EMBO barangays remapped Makati -> Taguig, 336,873 people). Facilities: OpenStreetMap schools and health facilities. Rainfall: Open-Meteo ERA5 reanalysis, 86 years.",
+  "rainfall_trends": "Across 86 years of ERA5 reanalysis, annual max daily rainfall, days >= 50 mm, and total rainfall show NO statistically significant trend for Metro Manila. The only significant trend is days >= 100 mm: +0.07 days per decade (p = .047). Do not claim rainfall is generally increasing.",
+  "briefs": "1,710 precomputed bilingual (English/Tagalog) public-safety briefs, one per barangay, generated with Claude Haiku and validated so every number matches the atlas (100% grounding pass rate).",
+  "bahatanong": "BahaTanong (baha 'flood' + tanong 'question') answers questions about the BahaMap Metro Manila flood-exposure atlas. It can NOT forecast weather or floods, and its data covers NCR only."
+}
