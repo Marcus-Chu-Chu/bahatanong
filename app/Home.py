@@ -45,11 +45,8 @@ st.caption(
 
 tab_show, tab_live = st.tabs(["Showcase (instant)", "Live agent"])
 
-with tab_show:
-    st.write("Twelve real agent runs, replayed with their genuine tool traces. Browsing them costs nothing.")
-    labels = [f"[{i['lang'].upper()}] {i['question']}" for i in SHOWCASE["items"]]
-    pick = st.selectbox("Pick a question", range(len(labels)), format_func=labels.__getitem__)
-    item = SHOWCASE["items"][pick]
+
+def _render_showcase(item: dict) -> None:
     with st.chat_message("user"):
         st.write(item["question"])
     with st.chat_message("assistant"):
@@ -58,6 +55,19 @@ with tab_show:
             for t in item["tool_trace"]:
                 st.code(f"{t['tool']}({json.dumps(t['args'], ensure_ascii=False)})", language="text")
                 st.text((t["result"] or "")[:800])
+
+
+with tab_show:
+    st.write("Twelve real agent runs, replayed with their genuine tool traces. Browsing them costs nothing.")
+    for lang, heading in (("en", "English"), ("tl", "Tagalog")):
+        items = [i for i in SHOWCASE["items"] if i["lang"] == lang]
+        st.subheader(heading)
+        pick = st.selectbox(
+            f"Pick a question ({heading})", range(len(items)),
+            format_func=lambda idx, items=items: items[idx]["question"],
+            key=f"showcase_{lang}",
+        )
+        _render_showcase(items[pick])
     st.caption(f"Generated {SHOWCASE['generated_at'][:10]} · {SHOWCASE['model']} · "
                f"prompt {SHOWCASE['prompt']}")
 
