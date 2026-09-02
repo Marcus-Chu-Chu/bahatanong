@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from app.limits import DAILY_CAP, check  # noqa: E402
 
-st.set_page_config(page_title="BahaTanong", page_icon="🌊", layout="centered")
+st.set_page_config(page_title="BahaTanong", layout="centered")
 SHOWCASE = json.loads((ROOT / "app" / "showcase.json").read_text(encoding="utf-8"))
 
 
@@ -34,7 +34,7 @@ def _today_count() -> int:
     return c["count"]
 
 
-st.title("🌊 BahaTanong")
+st.title("BahaTanong")
 st.caption(
     "*Baha* (flood) + *tanong* (question): ask the "
     "[BahaMap](https://bahamap-ftq9fcw37j2maqlib3msmo.streamlit.app) Metro Manila "
@@ -43,10 +43,10 @@ st.caption(
     "[GitHub](https://github.com/Marcus-Chu-Chu/bahatanong)"
 )
 
-tab_show, tab_live = st.tabs(["✨ Showcase (instant)", "🔴 Live agent"])
+tab_show, tab_live = st.tabs(["Showcase (instant)", "Live agent"])
 
 with tab_show:
-    st.write("Twelve real agent runs, replayed with their genuine tool traces - no API cost.")
+    st.write("Twelve real agent runs, replayed with their genuine tool traces. Browsing them costs nothing.")
     labels = [f"[{i['lang'].upper()}] {i['question']}" for i in SHOWCASE["items"]]
     pick = st.selectbox("Pick a question", range(len(labels)), format_func=labels.__getitem__)
     item = SHOWCASE["items"][pick]
@@ -54,7 +54,7 @@ with tab_show:
         st.write(item["question"])
     with st.chat_message("assistant"):
         st.write(item["answer"])
-        with st.expander("🔍 See the tools it called"):
+        with st.expander("See the tools it called"):
             for t in item["tool_trace"]:
                 st.code(f"{t['tool']}({json.dumps(t['args'], ensure_ascii=False)})", language="text")
                 st.text((t["result"] or "")[:800])
@@ -90,7 +90,7 @@ with tab_live:
                     try:
                         r = run_agent(q)
                         st.write(r["answer"])
-                        with st.expander("🔍 Tool trace"):
+                        with st.expander("Tool trace"):
                             for t in r["tool_trace"]:
                                 st.code(f"{t['tool']}({json.dumps(t['args'], ensure_ascii=False)})",
                                         language="text")
