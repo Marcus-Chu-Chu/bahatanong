@@ -1,6 +1,8 @@
 """BahaTanong - hybrid demo: precomputed Showcase (free, instant) + capped Live agent."""
 import datetime as dt
 import json
+import logging
+import os
 import sys
 from pathlib import Path
 
@@ -10,6 +12,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from app.limits import DAILY_CAP, check  # noqa: E402
 
+logger = logging.getLogger(__name__)
+
 st.set_page_config(page_title="BahaTanong", layout="centered")
 SHOWCASE = json.loads((ROOT / "app" / "showcase.json").read_text(encoding="utf-8"))
 
@@ -17,7 +21,7 @@ SHOWCASE = json.loads((ROOT / "app" / "showcase.json").read_text(encoding="utf-8
 def _secret(name: str, default: str = "") -> str:
     try:
         return st.secrets.get(name, default)
-    except Exception:
+    except Exception:  # noqa: BLE001  # no secrets file in local runs
         return default
 
 
@@ -53,12 +57,14 @@ def _render_showcase(item: dict) -> None:
         st.write(item["answer"])
         with st.expander("See the tools it called"):
             for t in item["tool_trace"]:
-                st.code(f"{t['tool']}({json.dumps(t['args'], ensure_ascii=False)})", language="text")
+                st.code(f"{t['tool']}({json.dumps(t['args'], ensure_ascii=False)})",
+                        language="text")
                 st.text((t["result"] or "")[:800])
 
 
 with tab_show:
-    st.write("Twelve real agent runs, replayed with their genuine tool traces. Browsing them costs nothing.")
+    st.write("Twelve real agent runs, replayed with their genuine tool traces. "
+             "Browsing them costs nothing.")
     for lang, heading in (("en", "English"), ("tl", "Tagalog")):
         items = [i for i in SHOWCASE["items"] if i["lang"] == lang]
         st.subheader(heading)
@@ -89,10 +95,10 @@ with tab_live:
             if not ok:
                 st.warning(msg)
             else:
-                import os
                 os.environ.setdefault("ANTHROPIC_API_KEY", _secret("ANTHROPIC_API_KEY"))
                 if _secret("ANTHROPIC_WORKSPACE_ID"):
-                    os.environ.setdefault("ANTHROPIC_WORKSPACE_ID", _secret("ANTHROPIC_WORKSPACE_ID"))
+                    os.environ.setdefault("ANTHROPIC_WORKSPACE_ID",
+                                          _secret("ANTHROPIC_WORKSPACE_ID"))
                 from agent.graph import run_agent  # deferred: first call loads the embedder lazily
                 with st.chat_message("user"):
                     st.write(q)
@@ -104,7 +110,8 @@ with tab_live:
                             for t in r["tool_trace"]:
                                 st.code(f"{t['tool']}({json.dumps(t['args'], ensure_ascii=False)})",
                                         language="text")
-                    except Exception:
+                    except Exception:  # noqa: BLE001  # keep the demo alive; details go to the log
+                        logger.exception("agent run failed")
                         st.error("Something went wrong talking to the agent - try again, "
                                  "or use the Showcase tab.")
                         r = None

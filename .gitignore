@@ -10,3 +10,5 @@ dist/
 .streamlit/secrets.toml
 models--*/
 .superpowers/
+docs/launch/
+docs/superpowers/

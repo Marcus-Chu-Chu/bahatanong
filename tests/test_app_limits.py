@@ -13,4 +13,4 @@ def test_session_cap_blocks():
 
 def test_daily_cap_blocks():
     ok, msg = check(session_count=0, today_count=DAILY_CAP)
-    assert not ok and "today" in msg.lower()
+    assert not ok and "daily" in msg.lower()

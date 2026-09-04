@@ -6,7 +6,7 @@ from pathlib import Path
 DATA_DIR = Path(__file__).resolve().parent / "data"
 
 # BahaMap processed outputs (build-time input only; the served app never reads it).
-# Default assumes the sibling checkout used on Marcus's machine.
+# Default assumes a sibling bahamap checkout; override with BAHAMAP_PROCESSED.
 BAHAMAP_PROCESSED = Path(
     os.environ.get(
         "BAHAMAP_PROCESSED",
