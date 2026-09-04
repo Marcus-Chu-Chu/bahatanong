@@ -21,7 +21,7 @@ def run_sql(query: str) -> dict:
         return {"columns": cols, "rows": [list(r) for r in rows], "row_count": len(rows)}
     except GuardError as e:
         return {"error": f"Blocked by SQL guard: {e}", "hint": _GUARD_HINT}
-    except Exception as e:  # duckdb binder/exec errors -> repairable feedback
+    except Exception as e:  # noqa: BLE001  # duckdb binder/exec errors -> repairable feedback
         return {"error": f"{type(e).__name__}: {e}", "hint": _GUARD_HINT}
 
 
@@ -38,14 +38,14 @@ def get_schema() -> dict:
             "notes": "1,710 NCR barangays; percentages are 0-100; flood zones are Project "
                      "NOAH scenarios, not history. Use glossary_lookup for definitions.",
         }
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001  # module contract: return an error dict, never raise
         return {"error": f"{type(e).__name__}: {e}"}
 
 
 def search_briefs(query: str, lang: str = "en", k: int = 4) -> dict:
     try:
         return {"results": search.search_briefs(query, lang=lang, k=int(k))}
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001  # module contract: return an error dict, never raise
         return {"error": f"{type(e).__name__}: {e}"}
 
 
@@ -56,8 +56,9 @@ def get_brief(pcode: str, lang: str = "en") -> dict:
         if brief is not None:
             return brief
         return {"error": f"No brief for pcode {pcode!r}.",
-                "suggestions": fuzzy.find_barangay(pcode) if not pcode.upper().startswith("PH") else []}
-    except Exception as e:
+                "suggestions": (fuzzy.find_barangay(pcode)
+                                if not pcode.upper().startswith("PH") else [])}
+    except Exception as e:  # noqa: BLE001  # module contract: return an error dict, never raise
         return {"error": f"{type(e).__name__}: {e}", "suggestions": []}
 
 
@@ -65,5 +66,5 @@ def glossary_lookup(term: str = "") -> dict:
     try:
         term = str(term) if term is not None else ""
         return glossary.lookup(term or None)
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001  # module contract: return an error dict, never raise
         return {"error": f"{type(e).__name__}: {e}"}

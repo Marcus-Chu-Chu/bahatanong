@@ -1,6 +1,6 @@
 from evals.scoring import score_item
 
-R = lambda answer, violations=[]: {"answer": answer, "violations": violations,
+R = lambda answer, violations=[]: {"answer": answer, "violations": violations,  # noqa: E731
                                    "tool_trace": [], "language": "en",
                                    "usage": {"input_tokens": 0, "output_tokens": 0}}
 

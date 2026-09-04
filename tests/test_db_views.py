@@ -47,7 +47,7 @@ def test_rainfall_years_and_dictionary():
 
 def test_connection_is_read_only():
     con = get_connection()
-    with pytest.raises(Exception):
+    with pytest.raises(Exception):  # noqa: B017  # duckdb error type varies by version
         con.execute("CREATE TABLE nope (x INT)")
 
 

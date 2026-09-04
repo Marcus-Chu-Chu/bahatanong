@@ -48,3 +48,16 @@ bahatanong_mcp = ["data/**/*"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 markers = ["live: needs ANTHROPIC_API_KEY (deselect with '-m \"not live\"')"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "BLE"]
+
+[tool.ruff.lint.per-file-ignores]
+# Data-building scripts and tests carry long SQL strings and bilingual fixtures.
+"build/*" = ["E501"]
+"evals/*" = ["E501"]
+"tests/*" = ["E501"]

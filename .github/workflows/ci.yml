@@ -9,4 +9,6 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e ".[dev]"
+      - run: pip install ruff
+      - run: ruff check .
       - run: pytest -m "not live" -v

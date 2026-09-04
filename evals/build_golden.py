@@ -17,7 +17,7 @@ OUT = Path(__file__).parent / "golden.jsonl"
 MANUAL = Path(__file__).parent / "golden_manual.jsonl"
 random.seed(20260901)
 
-Q = lambda sql: tools.run_sql(sql)["rows"]
+Q = lambda sql: tools.run_sql(sql)["rows"]  # noqa: E731
 
 # Sample pool: top-60 barangays by exposure keeps questions meaningful and names unambiguous.
 POOL = Q("""SELECT barangay, city, pcode, population, est_pop_exposed_25yr,
@@ -48,7 +48,8 @@ def make_lookup(n=30):
         for lang, tpl in (("en", en), ("tl", tl), ("en", en), ("tl", tl), ("en", en), ("tl", tl)):
             if len(items) >= n:
                 break
-            r = rows[i % len(rows)]; i += 1
+            r = rows[i % len(rows)]
+            i += 1
             items.append({"id": f"look-{len(items)+1:03d}", "type": "lookup", "lang": lang,
                           "question": tpl.format(b=r[0], c=r[1]),
                           "expect": {"value": float(r[metric]), "tolerance": float(tol)}})
@@ -58,7 +59,7 @@ def make_lookup(n=30):
 def make_ranking(n=20):
     items = []
     cities = random.sample(CITIES[:10], 5)
-    for i, city in enumerate(cities):
+    for city in cities:
         for k, lang, tpl in [
             (3, "en", "What are the top {k} most flood-exposed barangays in {city} by exposure score?"),
             (3, "tl", "Ano ang top {k} barangay sa {city} na pinakamataas ang exposure score?"),
@@ -152,7 +153,7 @@ def make_comparison(n=15):
 
 
 def main() -> None:
-    manual = [json.loads(l) for l in MANUAL.read_text(encoding="utf-8").splitlines() if l.strip()]
+    manual = [json.loads(ln) for ln in MANUAL.read_text(encoding="utf-8").splitlines() if ln.strip()]
     for it in manual:  # resolve PCODE:<Name>,<City> placeholders
         pc = it["expect"].get("pcode", "")
         if pc.startswith("PCODE:"):

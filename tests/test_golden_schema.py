@@ -6,7 +6,7 @@ GOLDEN = Path("evals/golden.jsonl")
 
 
 def _items():
-    return [json.loads(l) for l in GOLDEN.read_text(encoding="utf-8").splitlines() if l.strip()]
+    return [json.loads(ln) for ln in GOLDEN.read_text(encoding="utf-8").splitlines() if ln.strip()]
 
 
 def test_counts_and_distribution():

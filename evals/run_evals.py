@@ -31,7 +31,7 @@ def main() -> None:
     if args.subset is not None and args.subset <= 0:
         ap.error("--subset must be positive")
 
-    items = [json.loads(l) for l in GOLDEN.read_text(encoding="utf-8").splitlines() if l.strip()]
+    items = [json.loads(ln) for ln in GOLDEN.read_text(encoding="utf-8").splitlines() if ln.strip()]
     if args.subset:
         items = items[:: max(1, len(items) // args.subset)][: args.subset]
 
@@ -42,7 +42,7 @@ def main() -> None:
     for n, item in enumerate(items, 1):
         try:
             result = run_agent(item["question"], prompt_path=args.prompt, model=args.model)
-        except Exception as e:  # API failure -> scored as fail, run continues
+        except Exception as e:  # noqa: BLE001  # API failure -> scored as fail, run continues
             result = {"answer": f"[RUN ERROR] {e}",
                       "violations": [-1.0],  # marks the row ungrounded in aggregates
                       "tool_trace": [], "language": item["lang"], "retried": False,

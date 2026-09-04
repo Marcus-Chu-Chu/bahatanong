@@ -24,7 +24,8 @@ LANG_NAMES = {"en": "English", "tl": "Tagalog"}
 
 CAVEAT = {
     "en": "\n\n(Note: I could not verify some figures against the atlas, so I have removed them.)",
-    "tl": "\n\n(Paunawa: may mga bilang na hindi ko na-verify sa atlas, kaya inalis ko ang mga ito.)",
+    "tl": "\n\n(Paunawa: may mga bilang na hindi ko na-verify sa atlas, "
+          "kaya inalis ko ang mga ito.)",
 }
 
 

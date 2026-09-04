@@ -5,7 +5,7 @@ Run: ./.venv/Scripts/python build/03_build_showcase.py   (~$0.25)
 """
 import json
 import sys
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -41,7 +41,7 @@ def main() -> None:
         items.append({"question": q, "lang": lang, "answer": r["answer"],
                       "tool_trace": r["tool_trace"], "usage": r["usage"]})
     OUT.write_text(json.dumps({
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "generated_at": datetime.now(UTC).isoformat(),
         "prompt": PROMPT, "model": MODEL, "items": items,
     }, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"Wrote {OUT} with {len(items)} items")
