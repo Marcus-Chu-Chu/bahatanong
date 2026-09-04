@@ -1,5 +1,7 @@
 # BahaTanong
 
+[![CI](https://github.com/Marcus-Chu-Chu/bahatanong/actions/workflows/ci.yml/badge.svg)](https://github.com/Marcus-Chu-Chu/bahatanong/actions/workflows/ci.yml)
+
 *Baha* (flood) + *tanong* (question). **Ask the atlas.**
 
 A grounded, bilingual (English/Tagalog) data agent over the
@@ -9,9 +11,7 @@ Ask it a question in English or Tagalog; it writes SQL or searches 1,710
 bilingual briefs, and a grounding validator checks every number against the
 tool output before it reaches you.
 
-**Live app:** `<LIVE_APP_URL (added at deploy)>`
-
-<!-- Demo GIF: docs/launch/demo.gif, recorded and embedded at Task 16 Step 4 -->
+**Live app:** deploying to Streamlit Community Cloud — until then, run locally with `streamlit run app/Home.py` (the Showcase tab replays 12 real agent runs and needs no API key).
 
 ## What it does
 
@@ -46,9 +46,21 @@ Here is one of the runs from the showcase tab, quoted verbatim:
 
 ## Try it
 
-Live demo: `<LIVE_APP_URL (added at deploy)>`. The Showcase tab replays 12
-cached real agent runs for free and can't break; the Live tab runs the real
-agent, with per-session and per-day rate limits.
+Live demo: deploying to Streamlit Community Cloud — until then, run locally
+(see below). The Showcase tab replays 12 cached real agent runs for free and
+can't break; the Live tab runs the real agent, with per-session and per-day
+rate limits.
+
+### Run it locally
+
+```bash
+pip install -e ".[dev]"
+cp .env.example .env   # set ANTHROPIC_API_KEY (needed for the Live tab only)
+streamlit run app/Home.py
+```
+
+The Showcase tab works with no API key. Run the tests with
+`pytest -m "not live"`.
 
 ### Claude Desktop (MCP)
 
@@ -94,6 +106,7 @@ implementations that could quietly drift apart.
 Golden set: N=120 (67 English, 53 Tagalog), six question types,
 deterministic scoring (regex numeric extraction, tolerance windows, and name
 matching, with no LLM judge). Model: `claude-haiku-4-5`, temperature 0.
+All eval runs used the pinned dependency versions in `requirements.lock`.
 
 **Shipping prompt (V1):**
 
@@ -187,9 +200,8 @@ and [`evals/PREREGISTRATION.md`](evals/PREREGISTRATION.md).
 
 ## Built with Claude Code
 
-Built with [Claude Code](https://claude.com/claude-code) driving an approved
-spec and 16-task plan (`docs/superpowers/`), with a pre-registered
-experiment, deterministic evals, and a review pass between tasks.
+Development was AI-assisted (Claude Code); the architecture, eval design,
+and every reported number are reproducible from this repo.
 
 ## License
 
