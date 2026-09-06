@@ -11,6 +11,9 @@ Ask it a question in English or Tagalog; it writes SQL or searches 1,710
 bilingual briefs, and a grounding validator checks every number against the
 tool output before it reaches you.
 
+[BahaUlan](https://github.com/Marcus-Chu-Chu/bahaulan) is a daily rainfall and
+river-discharge pipeline (dbt on DuckDB) joined to the same exposure table.
+
 **Live app:** deploying to Streamlit Community Cloud — until then, run locally with `streamlit run app/Home.py` (the Showcase tab replays 12 real agent runs and needs no API key).
 
 ## What it does
